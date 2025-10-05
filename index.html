@@ -1,45 +1,74 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="az">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portföy Sitem - YouTube, Google Play & GitHub</title>
+    <title>Arifin Texnoloji Portfeli</title>
     <style>
-        /* Temel Stiller */
+        /* Ümumi Stiller */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Fira Code', monospace;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
-            color: #333;
+            background: #0a0e17; /* Terminal kimi qaranlıq fon */
+            color: #e0e0e0;
             overflow-x: hidden;
         }
 
         header {
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
+            background: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"%3E%3Cdefs%3E%3Cstyle%3E.cls-1{fill:none;stroke:%233b82f6;stroke-width:2px;opacity:0.3;}%3C/style%3E%3C/defs%3E%3Cpath class="cls-1" d="M0,540h1920M960,0v1080M100,540h1720M960,100v880M200,540h1520M960,200v680M300,540h1320M960,300v480M400,540h1120M960,400v280M500,540h920"/%3E%3C/svg%3E'), linear-gradient(135deg, #1e3a8a, #60a5fa); /* Prosessor dövrə lövhəsi kimi fon */
+            background-size: cover, cover;
+            background-position: center;
+            padding: 100px 20px;
             text-align: center;
-            padding: 50px 20px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(96, 165, 250, 0.3), transparent);
+            animation: circuitFlow 15s linear infinite;
         }
 
         header h1 {
-            font-size: 2.5em;
+            font-size: 3.5em;
             margin: 0;
-            animation: fadeInDown 1s ease-out;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+            color: #ffffff;
+            animation: typeWriter 2.5s steps(30) forwards, blinkCaret 0.75s step-end infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid #60a5fa;
         }
 
         header p {
-            font-size: 1.2em;
-            animation: fadeInUp 1s ease-out 0.5s;
+            font-size: 1.6em;
+            position: relative;
+            z-index: 1;
+            color: #bfdbfe;
+            animation: fadeInUp 1s ease-out 1.5s;
             animation-fill-mode: both;
         }
 
         /* Animasyonlar */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes typeWriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blinkCaret {
+            from, to { border-color: transparent; }
+            50% { border-color: #60a5fa; }
         }
 
         @keyframes fadeInUp {
@@ -47,24 +76,35 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes pulse {
+        @keyframes circuitFlow {
+            0% { transform: translate(-25%, -25%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-25%, -25%) scale(1.1); opacity: 0.5; }
+            100% { transform: translate(-25%, -25%) scale(1); opacity: 0.3; }
+        }
+
+        @keyframes cardHover {
+            0% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+            50% { transform: translateY(-10px); box-shadow: 0 8px 25px rgba(96, 165, 250, 0.7); }
+            100% { transform: translateY(0); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
+        }
+
+        @keyframes logoPulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Bölümler */
+        /* Bölmələr */
         .section {
-            padding: 40px 20px;
+            padding: 60px 20px;
             text-align: center;
             opacity: 0;
             transform: translateY(50px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+            margin: 20px 10px;
+            background: rgba(17, 24, 39, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
         }
 
         .section.visible {
@@ -73,99 +113,101 @@
         }
 
         .section h2 {
-            font-size: 2em;
-            margin-bottom: 20px;
-            color: #ff6b6b;
-            animation: pulse 2s infinite;
+            font-size: 2.2em;
+            color: #60a5fa;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .content {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
         }
 
         .card {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 20px;
+            background: #111827;
+            border-radius: 12px;
+            padding: 30px;
             width: 300px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             position: relative;
             overflow: hidden;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.5), transparent);
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .card:hover::before {
-            opacity: 1;
-            animation: rotate 10s linear infinite;
+            animation: cardHover 1.5s ease-in-out infinite;
         }
 
         .card img {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 10px;
-            border-radius: 50%;
-            object-fit: cover;
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover img {
+            animation: logoPulse 1s ease-in-out;
+        }
+
+        .card h3 {
+            color: #ffffff;
+            font-size: 1.6em;
+            margin: 10px 0;
+        }
+
+        .card p {
+            color: #9ca3af;
+            font-size: 1em;
         }
 
         .card a {
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 15px;
             padding: 10px 20px;
-            background: #4ecdc4;
-            color: white;
+            background: linear-gradient(135deg, #60a5fa, #1e40af);
+            color: #ffffff;
             text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
+            border-radius: 6px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background 0.3s, transform 0.3s;
         }
 
         .card a:hover {
-            background: #ff6b6b;
+            background: linear-gradient(135deg, #1e40af, #60a5fa);
+            transform: scale(1.1);
         }
 
         footer {
-            background: #333;
-            color: white;
+            background: #111827;
+            color: #9ca3af;
             text-align: center;
-            padding: 20px;
-            margin-top: 40px;
+            padding: 25px;
+            margin-top: 50px;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.6);
         }
 
-        /* Responsif Tasarım */
+        /* Responsiv Dizayn */
         @media (max-width: 768px) {
             header h1 {
-                font-size: 2em;
+                font-size: 2.2em;
             }
 
             header p {
-                font-size: 1em;
+                font-size: 1.3em;
             }
 
             .section h2 {
-                font-size: 1.5em;
+                font-size: 1.8em;
             }
 
             .card {
                 width: 90%;
+                max-width: 300px;
             }
 
             .content {
@@ -174,70 +216,101 @@
             }
         }
 
-        /* Ek CSS Efektleri */
+        /* Texnoloji Dalğa Effekti */
         .wave {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 100px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23fff' fill-opacity='1' d='M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,245.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            height: 150px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%2360a5fa' fill-opacity='0.4' d='M0,160L48,149.3C96,139,192,117,288,128C384,139,480,181,576,181.3C672,181,768,139,864,117.3C960,96,1056,96,1152,117.3C1248,139,1344,181,1392,202.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
             background-size: cover;
+            animation: waveMove 10s linear infinite;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-1440px); }
+        }
+
+        /* Enerji Parçacık Effekti */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #60a5fa;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #60a5fa;
+            animation: energyFlow 8s infinite linear;
+        }
+
+        @keyframes energyFlow {
+            0% { transform: translateY(0) translateX(0); opacity: 0.7; }
+            50% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(5px); opacity: 0; }
         }
     </style>
 </head>
 <body>
+    <div class="particles" id="particles"></div>
     <header>
-        <h1>Hoş Geldiniz! Benim Portföy Sitem</h1>
-        <p>YouTube, Google Play ve GitHub paylaşımlarımı keşfedin.</p>
+        <h1>Salam, mən Arif! Saytıma xoş gəldin!</h1>
+        <p>Kod, oyun və texnologiya dünyamda səyahətə hazır ol!</p>
         <div class="wave"></div>
     </header>
 
     <section id="youtube" class="section">
-        <h2>YouTube Kanalım</h2>
+        <h2>YouTube</h2>
         <div class="content">
             <div class="card">
-                <img src="https://via.placeholder.com/100?text=YT" alt="YouTube Logo">
-                <h3>Kanalım</h3>
-                <p>En son videolarımı izleyin!</p>
-                <a href="https://www.youtube.com/yourchannel" target="_blank">Ziyaret Et</a>
+                <img src="https://www.youtube.com/about/static/svgs/icons/brand-logo.svg" alt="YouTube Logo">
+                <h3>YouTube Kanalım</h3>
+                <p>Oyun və texnologiya videolarımı kəşf et!</p>
+                <a href="https://www.youtube.com/@GigaChadDev" target="_blank">Kanala Bax</a>
             </div>
-            <!-- Daha fazla kart ekleyebilirsiniz -->
         </div>
     </section>
 
     <section id="googleplay" class="section">
-        <h2>Google Play Uygulamalarım</h2>
+        <h2>Google Play</h2>
         <div class="content">
             <div class="card">
-                <img src="https://via.placeholder.com/100?text=GP" alt="Google Play Logo">
-                <h3>Uygulamam</h3>
-                <p>Mobil uygulamalarımı indirin!</p>
-                <a href="https://play.google.com/store/apps/details?id=yourapp" target="_blank">İndir</a>
+                <img src="https://play.google.com/about/brand-assets/play_store_logo.svg" alt="Google Play Logo">
+                <h3>Space Havoc</h3>
+                <p>Kosmik gəminlə asteroidləri məhv et, xallar topla!</p>
+                <a href="https://play.google.com/store/apps/dev?id=8982268170848334133" target="_blank">Tətbiqi Yüklə</a>
             </div>
-            <!-- Daha fazla kart ekleyebilirsiniz -->
         </div>
     </section>
 
     <section id="github" class="section">
-        <h2>GitHub Projelerim</h2>
+        <h2>GitHub</h2>
         <div class="content">
             <div class="card">
-                <img src="https://via.placeholder.com/100?text=GH" alt="GitHub Logo">
-                <h3>Projem</h3>
-                <p>Açık kaynak kodlarımı inceleyin!</p>
-                <a href="https://github.com/yourusername/yourrepo" target="_blank">Gör</a>
+                <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
+                <h3>Layihələrim</h3>
+                <p>Açıq mənbəli kodlarımı yoxla!</p>
+                <a href="https://github.com/Arif0110" target="_blank">GitHub-a Keç</a>
             </div>
-            <!-- Daha fazla kart ekleyebilirsiniz -->
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2025 - Tüm hakları saklıdır.</p>
+        <p>&copy; 2025 - Texnoloji Dünyada Görüşək!</p>
     </footer>
 
     <script>
-        // Bölümleri görünür hale getirmek için Intersection Observer
+        // Bölmələrin Görünmə Animasyonu
         const sections = document.querySelectorAll('.section');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -250,6 +323,17 @@
         sections.forEach(section => {
             observer.observe(section);
         });
+
+        // Enerji Parçacık Effekti
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.animationDelay = `${Math.random() * 6}s`;
+            particle.style.animationDuration = `${4 + Math.random() * 6}s`;
+            particlesContainer.appendChild(particle);
+        }
     </script>
 </body>
 </html>
