@@ -3,99 +3,158 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arif0110 - Geliştirici ve Uygulama Yaratıcısı</title>
-  <!-- Bootstrap CSS (sade ve modern tasarım için) -->
+  <title>ArifDeV - Geliştirici & Oyun Yaratıcısı</title>
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Google Fonts (Poppins fontu - sade ve güzel) -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <!-- Custom CSS (renkler ve stil için) -->
+  <!-- Google Fonts (Inter - havalı ve modern) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome (ikonlar için) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <!-- Animate.css (animasyonlar için) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f8f9fa; /* Açık gri arka plan - sade */
-      color: #333;
+      font-family: 'Inter', sans-serif;
+      background-color: #0a0a0a; /* Koyu siyah tema */
+      color: #e0e0e0;
+      margin: 0;
+      overflow-x: hidden;
     }
     .hero {
-      background: linear-gradient(135deg, #007bff, #0056b3); /* Mavi gradient - güzel giriş */
-      color: white;
-      padding: 100px 0;
+      background: linear-gradient(135deg, #1e3a8a, #7e22ce); /* Neon mavi-mor gradient */
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1), transparent);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
     }
     .hero h1 {
-      font-size: 3rem;
-      font-weight: 700;
-      margin-bottom: 20px;
+      font-size: 4rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(255, 111, 97, 0.7); /* Neon glow */
+      animation: animate__fadeInDown 1s;
     }
     .hero p {
+      font-size: 1.5rem;
+      margin: 20px 0;
+      animation: animate__fadeIn 1.5s;
+    }
+    .cta-btn {
+      background-color: #ff6f61; /* Neon koral */
+      border: none;
+      padding: 15px 30px;
       font-size: 1.2rem;
-      margin-bottom: 30px;
+      font-weight: 700;
+      border-radius: 50px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: animate__pulse 2s infinite;
+    }
+    .cta-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 111, 97, 0.5);
     }
     .links-section {
-      padding: 60px 0;
-      background-color: white;
+      padding: 80px 0;
+      background-color: #121212; /* Koyu gri alt bölüm */
     }
     .link-card {
+      background-color: #1e1e1e;
+      border: 1px solid #ff6f61; /* Neon kenar */
+      border-radius: 10px;
+      padding: 20px;
       margin-bottom: 20px;
       text-align: center;
-      border: none;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Hafif gölge - modern */
+      transition: transform 0.3s;
+      animation: animate__fadeInUp 1s;
+    }
+    .link-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px rgba(255, 111, 97, 0.3);
+    }
+    .link-card i {
+      font-size: 2rem;
+      color: #ff6f61;
+      margin-bottom: 10px;
     }
     .link-card a {
-      color: #007bff;
+      color: #e0e0e0;
       text-decoration: none;
       font-weight: 600;
     }
     .link-card a:hover {
-      color: #0056b3;
+      color: #ff6f61;
     }
     footer {
-      background-color: #343a40; /* Koyu footer - sade */
-      color: white;
+      background-color: #0a0a0a;
+      color: #888;
       text-align: center;
       padding: 20px 0;
+      border-top: 1px solid #ff6f61;
     }
-    @media (max-width: 768px) { /* Mobil uyumlu - küçük ekranlar için */
-      .hero h1 { font-size: 2rem; }
-      .hero { padding: 60px 0; }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+      .hero p { font-size: 1.2rem; }
+      .cta-btn { padding: 10px 20px; font-size: 1rem; }
     }
   </style>
 </head>
 <body>
-  <!-- Giriş Bölümü (Hero) - Güzel ve dikkat çekici -->
+  <!-- Hero Bölümü - Havalı giriş -->
   <section class="hero">
-    <div class="container">
-      <h1>Merhaba, Ben Arif0110!</h1>
-      <p>Uygulama geliştirici, yaratıcı ve teknoloji tutkunu. Play Store'da harika uygulamalarım var!</p>
-      <a href="https://play.google.com/store/apps/developer?id=Arif0110" class="btn btn-light btn-lg">Uygulamalarımı Keşfet</a>
+    <div class="container hero-content">
+      <h1 class="animate__animated">ArifDeV</h1>
+      <p>Oyun geliştiricisi, kod aşığı, YouTube içerik üreticisi. Space Havoc ile galaksiyi fethet!</p>
+      <a href="https://play.google.com/store/apps/details?id=com.arifdev.spacehavoc" class="btn cta-btn">Space Havoc'u İndir</a>
     </div>
   </section>
 
-  <!-- Linkler Bölümü - Sade kartlar halinde -->
+  <!-- Linkler Bölümü - İkonlu kartlar -->
   <section class="links-section">
     <div class="container">
-      <h2 class="text-center mb-5">Beni Takip Et</h2>
+      <h2 class="text-center mb-5 animate__animated animate__fadeIn">Beni Keşfet</h2>
       <div class="row">
         <div class="col-md-4">
           <div class="card link-card">
             <div class="card-body">
+              <i class="fab fa-github"></i>
               <h5>GitHub</h5>
-              <a href="https://github.com/arif0110" target="_blank">github.com/arif0110</a>
+              <a href="https://github.com/Arif0110" target="_blank">github.com/Arif0110</a>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card link-card">
             <div class="card-body">
+              <i class="fab fa-youtube"></i>
               <h5>YouTube</h5>
-              <a href="https://youtube.com/@arif0110" target="_blank">youtube.com/@arif0110</a> <!-- Kanal linkini değiştir -->
+              <a href="https://www.youtube.com/@GigaChadDev" target="_blank">youtube.com/@GigaChadDev</a>
             </div>
           </div>
         </div>
         <div class="col-md-4">
           <div class="card link-card">
             <div class="card-body">
+              <i class="fab fa-google-play"></i>
               <h5>Play Store</h5>
-              <a href="https://play.google.com/store/apps/developer?id=Arif0110" target="_blank">play.google.com/store/apps/developer?id=Arif0110</a>
+              <a href="https://play.google.com/store/apps/developer?id=8982268170848334133" target="_blank">ArifDeV Apps</a>
             </div>
           </div>
         </div>
@@ -103,14 +162,14 @@
     </div>
   </section>
 
-  <!-- Footer - Sade kapanış -->
+  <!-- Footer -->
   <footer>
     <div class="container">
-      <p>&copy; 2025 Arif0110. Tüm hakları saklıdır.</p>
+      <p>&copy; 2025 ArifDeV. Built with 🚀 by Arif0110.</p>
     </div>
   </footer>
 
-  <!-- Bootstrap JS (butonlar için) -->
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
