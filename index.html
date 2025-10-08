@@ -215,9 +215,6 @@
       animation-delay: 4s;
     }
 
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
     #cursor-effect {
       position: fixed;
       width: 60px;
@@ -307,6 +304,27 @@
       cursor: pointer;
     }
 
+    #game-canvas {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      width: 200px;
+      height: 200px;
+      border: 2px solid #00ff00;
+      border-radius: 10px;
+      z-index: 5;
+    }
+
+    #game-score {
+      position: fixed;
+      top: 5px;
+      right: 10px;
+      color: #00ff00;
+      font-size: 1rem;
+      z-index: 6;
+      text-shadow: 0 0 10px rgba(0,255,125,0.7);
+    }
+
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
       h2 { font-size: 1.2rem; }
@@ -315,6 +333,8 @@
       .projects { grid-template-columns: 1fr; }
       .project-card { padding: 15px; }
       .modal-content { max-width: 90%; }
+      #game-canvas { width: 150px; height: 150px; }
+      #game-score { font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -324,6 +344,8 @@
     <canvas id="outerspace"></canvas>
   </div>
   <div id="cursor-effect"></div>
+  <div id="game-score">Xal: 0</div>
+  <canvas id="game-canvas"></canvas>
 
   <h1 id="title"></h1>
   <h2 id="subtitle"></h2>
@@ -376,10 +398,6 @@
 
   <footer>&copy; 2025 ArifDeV - Bütün hüquqlar qorunur</footer>
 
-  <audio id="background-music" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
-  </audio>
-
   <script>
     // Harf-harf animasiya
     function animateText(el, text, delay=100, callback=null) {
@@ -414,15 +432,12 @@
     // Starfield Effekti
     let outerspace = document.querySelector("#outerspace");
     let mainContext = outerspace.getContext('2d');
-
     let canvasWidth = window.innerWidth;
     let canvasHeight = window.innerHeight;
     outerspace.width = canvasWidth;
     outerspace.height = canvasHeight;
-
     let centerX = canvasWidth * 0.5;
     let centerY = canvasHeight * 0.5;
-
     let numberOfStars = 500;
     let stars = [];
     let frames_per_second = 60;
@@ -525,7 +540,6 @@
       const rectTitle = title.getBoundingClientRect();
       const rectSubtitle = subtitle.getBoundingClientRect();
 
-      // Kursor mətnin üzərindədirsə
       const isOverTitle = e.clientX >= rectTitle.left && e.clientX <= rectTitle.right &&
                          e.clientY >= rectTitle.top && e.clientY <= rectTitle.bottom;
       const isOverSubtitle = e.clientX >= rectSubtitle.left && e.clientX <= rectSubtitle.right &&
@@ -536,7 +550,6 @@
         cursorEffect.style.left = `${e.clientX - 30}px`;
         cursorEffect.style.top = `${e.clientY - 30}px`;
 
-        // Hərfləri yoxla
         const letters = document.querySelectorAll('.letter');
         letters.forEach(letter => {
           const rect = letter.getBoundingClientRect();
@@ -590,17 +603,163 @@
       });
     });
 
-    // Kliklə modalın kənarına basıldıqda bağla
     window.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal')) {
         e.target.style.display = 'none';
       }
     });
 
-    // Musiqi nəzarəti
-    const audio = document.getElementById('background-music');
-    audio.volume = 0.3;
-    audio.play();
+    // Meteor Oyunu
+    const gameCanvas = document.getElementById('game-canvas');
+    const gameContext = gameCanvas.getContext('2d');
+    const scoreDisplay = document.getElementById('game-score');
+    let score = 0;
+
+    gameCanvas.width = 200;
+    gameCanvas.height = 200;
+
+    class Meteor {
+      constructor() {
+        this.x = gameCanvas.width;
+        this.y = getRandomInt(0, gameCanvas.height);
+        this.radius = getRandomInt(5, 10);
+        this.speed = getRandomInt(1, 3);
+        this.isHit = false;
+        this.wave = Math.random() * 10;
+        this.waveSpeed = Math.random() * 0.05;
+      }
+
+      update() {
+        if (!this.isHit) {
+          this.x -= this.speed;
+          this.y += Math.sin(this.wave) * 2;
+          this.wave += this.waveSpeed;
+        }
+      }
+
+      draw() {
+        if (this.isHit) {
+          gameContext.beginPath();
+          gameContext.arc(this.x, this.y, this.radius * 1.5, 0, Math.PI * 2);
+          gameContext.fillStyle = 'rgba(255,111,97,0.5)';
+          gameContext.fill();
+        } else {
+          gameContext.beginPath();
+          gameContext.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          gameContext.fillStyle = '#a0a0a0';
+          gameContext.fill();
+        }
+      }
+    }
+
+    class Turret {
+      constructor() {
+        this.x = gameCanvas.width / 2;
+        this.y = gameCanvas.height / 2;
+        this.radius = 5;
+      }
+
+      update(mouseX, mouseY) {
+        const rect = gameCanvas.getBoundingClientRect();
+        this.x = Math.max(0, Math.min(gameCanvas.width, mouseX - rect.left));
+        this.y = Math.max(0, Math.min(gameCanvas.height, mouseY - rect.top));
+      }
+
+      draw() {
+        gameContext.beginPath();
+        gameContext.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        gameContext.fillStyle = '#00ff00';
+        gameContext.fill();
+      }
+    }
+
+    class Laser {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.speed = 5;
+        this.radius = 2;
+      }
+
+      update() {
+        this.x += this.speed;
+      }
+
+      draw() {
+        gameContext.beginPath();
+        gameContext.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        gameContext.fillStyle = '#ff6f61';
+        gameContext.fill();
+      }
+    }
+
+    let meteors = [];
+    let lasers = [];
+    let turret = new Turret();
+
+    function spawnMeteor() {
+      meteors.push(new Meteor());
+    }
+
+    setInterval(spawnMeteor, 1500); // Hər 1.5 saniyədən bir meteor yaradılır
+
+    gameCanvas.addEventListener('click', (e) => {
+      const rect = gameCanvas.getBoundingClientRect();
+      lasers.push(new Laser(turret.x, turret.y));
+    });
+
+    function gameLoop(timestamp) {
+      gameContext.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+      // Lazer topunu çək
+      turret.draw();
+
+      // Meteorları yenilə və çək
+      meteors.forEach((meteor, mIndex) => {
+        meteor.update();
+        meteor.draw();
+
+        // Lazerlə toqquşma yoxlaması
+        lasers.forEach((laser, lIndex) => {
+          const dx = laser.x - meteor.x;
+          const dy = laser.y - meteor.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < laser.radius + meteor.radius && !meteor.isHit) {
+            meteor.isHit = true;
+            score += 10;
+            scoreDisplay.textContent = `Xal: ${score}`;
+            setTimeout(() => {
+              meteors.splice(mIndex, 1);
+            }, 200);
+            lasers.splice(lIndex, 1);
+          }
+        });
+
+        // Sərhəddən kənara çıxan meteorları sil
+        if (meteor.x < -meteor.radius) {
+          meteors.splice(mIndex, 1);
+        }
+      });
+
+      // Lazerləri yenilə və çək
+      lasers.forEach((laser, index) => {
+        laser.update();
+        laser.draw();
+        if (laser.x > gameCanvas.width) {
+          lasers.splice(index, 1);
+        }
+      });
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    gameCanvas.addEventListener('mousemove', (e) => {
+      const rect = gameCanvas.getBoundingClientRect();
+      turret.update(e.clientX, e.clientY);
+    });
+
+    requestAnimationFrame(gameLoop);
   </script>
 
 </body>
