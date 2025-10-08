@@ -14,7 +14,7 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-      background: radial-gradient(circle at top left, #0a0a0a, #1e1e1e);
+      background: linear-gradient(135deg, #0a0a0a, #1e1e1e);
       color: #00ff00;
       text-align: center;
       display: flex;
@@ -26,13 +26,14 @@
     }
 
     .stars {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background: transparent;
       z-index: 0;
+      transform: translateZ(0);
     }
 
     .star {
@@ -42,25 +43,26 @@
       background: #fff;
       border-radius: 50%;
       opacity: 0.8;
-      animation: twinkle 2s infinite alternate;
+      animation: twinkle 2s infinite alternate, moveStars 20s linear infinite;
     }
 
     @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+    @keyframes moveStars { from { transform: translateY(0); } to { transform: translateY(-100vh); } }
 
     h1, h2 {
       position: relative;
       z-index: 1;
       letter-spacing: 2px;
-      text-shadow: 0 0 15px rgba(0,255,125,0.6);
+      text-shadow: 0 0 20px rgba(0,255,125,0.7), 0 0 40px rgba(0,255,125,0.3);
       margin: 10px 0;
     }
 
-    h1 { font-size: 3rem; font-weight: 900; }
-    h2 { font-size: 1.4rem; font-weight: 400; color: #a0a0a0; }
+    h1 { font-size: 3.5rem; font-weight: 900; }
+    h2 { font-size: 1.5rem; font-weight: 400; color: #a0a0a0; }
 
     .links {
       display: flex;
-      gap: 25px;
+      gap: 30px;
       margin-top: 30px;
       opacity: 0;
       animation: fadeInUp 1s ease forwards;
@@ -71,22 +73,23 @@
 
     .links a {
       color: #00ff00;
-      font-size: 2rem;
-      transition: transform 0.3s, color 0.3s;
+      font-size: 2.5rem;
+      transition: transform 0.3s, color 0.3s, text-shadow 0.3s;
+      transform-style: preserve-3d;
     }
 
     .links a:hover {
       color: #ff6f61;
-      transform: scale(1.3);
+      transform: rotateY(360deg) scale(1.2);
+      text-shadow: 0 0 20px #ff6f61;
     }
 
-    /* Projeler yan yana 2 sütun */
     .projects {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 50px;
-      max-width: 900px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 60px;
+      max-width: 1000px;
       position: relative;
       z-index: 1;
       justify-items: center;
@@ -94,16 +97,17 @@
     }
 
     .project-card {
-      background: rgba(10,10,10,0.8);
-      border: 1px solid #00ff00;
-      border-radius: 12px;
-      padding: 20px;
+      background: rgba(10,10,10,0.85);
+      border: 2px solid #00ff00;
+      border-radius: 15px;
+      padding: 25px;
       width: 100%;
       box-sizing: border-box;
       opacity: 0;
-      transform: translateY(30px);
-      transition: transform 0.3s, opacity 0.3s;
+      transform: translateY(50px);
+      transition: transform 0.5s, opacity 0.5s, border-color 0.3s;
       text-align: center;
+      animation: pulse 2s infinite alternate;
     }
 
     .project-card.show {
@@ -111,42 +115,55 @@
       transform: translateY(0);
     }
 
+    .project-card:hover {
+      border-color: #ff6f61;
+      box-shadow: 0 0 20px rgba(255,111,97,0.5);
+    }
+
+    @keyframes pulse {
+      from { box-shadow: 0 0 10px rgba(0,255,0,0.3); }
+      to { box-shadow: 0 0 20px rgba(0,255,0,0.7); }
+    }
+
     .project-card h3 {
-      font-size: 1.3rem;
-      margin-bottom: 10px;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
       color: #00ff00;
     }
 
     .project-card p {
       font-size: 1rem;
       color: #a0a0a0;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     footer {
-      position: absolute;
-      bottom: 15px;
-      font-size: 0.9rem;
+      position: fixed;
+      bottom: 20px;
+      font-size: 1rem;
       color: #ff0000;
       z-index: 1;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 4s;
     }
 
     .letter {
       display: inline-block;
       opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.5s forwards;
+      transform: translateY(30px);
+      animation: fadeUp 0.6s forwards;
     }
 
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 768px) {
-      h1 { font-size: 2rem; }
-      h2 { font-size: 1rem; }
-      .links a { font-size: 1.7rem; }
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 1.2rem; }
+      .links a { font-size: 2rem; }
       .projects { grid-template-columns: 1fr; }
+      .project-card { padding: 15px; }
     }
   </style>
 </head>
@@ -166,22 +183,22 @@
   <div class="projects">
     <div class="project-card">
       <h3>Unity</h3>
-      <p>Unity ile oyun layihələri.</p>
+      <p>Unity ilə interaktiv oyun layihələri və simulyasiyalar.</p>
     </div>
     <div class="project-card">
-      <h3>C++ </h3>
-      <p> </p>
+      <h3>C++</h3>
+      <p>Yüksək performanslı proqramlar və sistem inkişafı.</p>
     </div>
     <div class="project-card">
-      <h3>OpenGL </h3>
-      <p> </p>
+      <h3>OpenGL</h3>
+      <p>3D qrafika və vizuallaşdırma layihələri.</p>
     </div>
   </div>
 
-  <footer>&copy; 2025 ArifDeV</footer>
+  <footer>&copy; 2025 ArifDeV - Bütün hüquqlar qorunur</footer>
 
   <script>
-    // Harf harf animasyon
+    // Harf-harf animasiya
     function animateText(el, text, delay=100, callback=null) {
       el.innerHTML = '';
       for (let i = 0; i < text.length; i++) {
@@ -191,36 +208,43 @@
         span.style.animationDelay = (i * delay) + 'ms';
         el.appendChild(span);
       }
-      if (callback) setTimeout(callback, text.length * delay + 200);
+      if (callback) setTimeout(callback, text.length * delay + 300);
     }
 
     const titleEl = document.getElementById('title');
     const subtitleEl = document.getElementById('subtitle');
 
     animateText(titleEl, "Salam, Mən Arif.", 150, () => {
-      animateText(subtitleEl, "Texnologiya və oyuninkişafı ilə məşğulam. C++, Unity, OpenGL və layihələr üzərində işləyirəm.", 30, showProjects);
+      animateText(subtitleEl, "Texnologiya və oyun inkişafında sərhədləri aşan layihələr üzərində işləyirəm.", 30, showProjects);
     });
 
-    // Projeleri sırayla göster
+    // Layihə kartlarını ardıcıl göstər
     function showProjects() {
       const cards = document.querySelectorAll('.project-card');
       cards.forEach((card, i) => {
         setTimeout(() => {
           card.classList.add('show');
-        }, i * 500);
+        }, i * 600);
       });
     }
 
-    // Yıldızları random konumla oluştur
+    // Ulduzları random yerləşdir və hərəkət etdir
     const starsContainer = document.querySelector('.stars');
-    for(let i=0; i<100; i++){
+    for (let i = 0; i < 150; i++) {
       const star = document.createElement('div');
       star.className = 'star';
       star.style.top = Math.random() * 100 + '%';
       star.style.left = Math.random() * 100 + '%';
-      star.style.width = star.style.height = Math.random()*2 + 1 + 'px';
+      star.style.width = star.style.height = Math.random() * 3 + 1 + 'px';
+      star.style.animationDelay = Math.random() * 2 + 's';
       starsContainer.appendChild(star);
     }
+
+    // Parallax effekti üçün scroll hadisəsi
+    window.addEventListener('scroll', () => {
+      const stars = document.querySelector('.stars');
+      stars.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+    });
   </script>
 
 </body>
