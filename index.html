@@ -70,6 +70,19 @@
       line-height: 1.6; 
     }
 
+    .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 0.6s forwards;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .letter.active {
+      color: #ffffff;
+      text-shadow: 0 0 15px #ff6f61;
+    }
+
     .links {
       display: flex;
       gap: 30px;
@@ -130,18 +143,9 @@
     }
 
     @keyframes sonarEffect {
-      0% {
-        opacity: 0.5;
-      }
-      40% {
-        opacity: 0.7;
-        box-shadow: 0 0 0 2px #ff6f61, 0 0 10px 10px #ff6f61, 0 0 0 10px #ff6f61;
-      }
-      100% {
-        box-shadow: 0 0 0 2px #ff6f61, 0 0 10px 10px #ff6f61, 0 0 0 10px #ff6f61;
-        transform: scale(1.5);
-        opacity: 0;
-      }
+      0% { opacity: 0.5; }
+      40% { opacity: 0.7; box-shadow: 0 0 0 2px #ff6f61, 0 0 10px 10px #ff6f61, 0 0 0 10px #ff6f61; }
+      100% { box-shadow: 0 0 0 2px #ff6f61, 0 0 10px 10px #ff6f61, 0 0 0 10px #ff6f61; transform: scale(1.5); opacity: 0; }
     }
 
     .projects {
@@ -164,16 +168,17 @@
       width: 100%;
       box-sizing: border-box;
       opacity: 0;
-      transform: translateY(50px);
+      transform: translateY(50px) rotateX(-10deg);
       transition: transform 0.5s ease, opacity 0.5s ease, border-color 0.3s ease, box-shadow 0.3s ease;
       text-align: center;
       animation: pulse 2s infinite alternate;
       transform-style: preserve-3d;
+      cursor: pointer;
     }
 
     .project-card.show {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) rotateX(0deg);
     }
 
     .project-card:hover {
@@ -210,15 +215,97 @@
       animation-delay: 4s;
     }
 
-    .letter {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 0.6s forwards;
-    }
-
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
     @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+    #cursor-effect {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,111,97,0.3) 0%, rgba(255,111,97,0) 70%);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .trail {
+      position: fixed;
+      width: 5px;
+      height: 5px;
+      background: #ff6f61;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeOut 0.5s forwards;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: scale(0); }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 10;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: rgba(10,10,10,0.95);
+      border: 2px solid #00ff00;
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 500px;
+      text-align: center;
+      color: #00ff00;
+      animation: modalPop 0.3s ease;
+    }
+
+    @keyframes modalPop {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-content h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+
+    .modal-content p {
+      font-size: 1rem;
+      color: #a0a0a0;
+      line-height: 1.5;
+    }
+
+    .modal-content a {
+      color: #ff6f61;
+      text-decoration: none;
+      font-size: 1.2rem;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .modal-content a:hover {
+      text-decoration: underline;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 1.5rem;
+      color: #ff6f61;
+      cursor: pointer;
+    }
 
     @media (max-width: 768px) {
       h1 { font-size: 2.5rem; }
@@ -227,6 +314,7 @@
       .links a i { font-size: 2rem; line-height: 50px; }
       .projects { grid-template-columns: 1fr; }
       .project-card { padding: 15px; }
+      .modal-content { max-width: 90%; }
     }
   </style>
 </head>
@@ -235,6 +323,7 @@
   <div class="stars">
     <canvas id="outerspace"></canvas>
   </div>
+  <div id="cursor-effect"></div>
 
   <h1 id="title"></h1>
   <h2 id="subtitle"></h2>
@@ -246,21 +335,50 @@
   </div>
 
   <div class="projects">
-    <div class="project-card">
+    <div class="project-card" data-modal="modal1">
       <h3>Unity</h3>
       <p>Unity ilə interaktiv oyunlar və immersiv simulyasiyalar.</p>
     </div>
-    <div class="project-card">
+    <div class="project-card" data-modal="modal2">
       <h3>C++</h3>
       <p>Yüksək performanslı sistem proqramlaşdırması və optimallaşdırılmış alqoritmlər.</p>
     </div>
-    <div class="project-card">
+    <div class="project-card" data-modal="modal3">
       <h3>OpenGL</h3>
       <p>3D qrafika, vizualizasiya və real vaxt render layihələri.</p>
     </div>
   </div>
 
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Unity Layihələri</h3>
+      <p>Unity ilə hazırlanmış 3D və 2D oyunlar, AR/VR təcrübələri və simulyasiyalar. Ətraflı məlumat üçün GitHub və ya YouTube səhifələrimə baxın.</p>
+      <a href="https://github.com/Arif0110" target="_blank">GitHub-da Bax</a>
+    </div>
+  </div>
+  <div id="modal2" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>C++ Layihələri</h3>
+      <p>Yüksək performanslı sistemlər və alqoritmlər üzərində işləyirəm. Mənbə kodlarım GitHub-da!</p>
+      <a href="https://github.com/Arif0110" target="_blank">GitHub-da Bax</a>
+    </div>
+  </div>
+  <div id="modal3" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>OpenGL Layihələri</h3>
+      <p>3D qrafika və real vaxt render ilə bağlı layihələrim. Ətraflı məlumat üçün YouTube kanalımı yoxlayın.</p>
+      <a href="https://www.youtube.com/@GigaChadDev" target="_blank">YouTube-da Bax</a>
+    </div>
+  </div>
+
   <footer>&copy; 2025 ArifDeV - Bütün hüquqlar qorunur</footer>
+
+  <audio id="background-music" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+  </audio>
 
   <script>
     // Harf-harf animasiya
@@ -306,15 +424,11 @@
     let centerY = canvasHeight * 0.5;
 
     let numberOfStars = 500;
-
     let stars = [];
-
     let frames_per_second = 60;
-
     let interval = Math.floor(1000 / frames_per_second);
     let startTime = performance.now();
     let previousTime = startTime;
-
     let currentTime = 0;
     let deltaTime = 0;
 
@@ -323,38 +437,30 @@
         this.x = getRandomInt(-centerX, centerX);
         this.y = getRandomInt(-centerY, centerY);
         this.counter = getRandomInt(1, canvasWidth);
-
         this.radiusMax = 1 + Math.random() * 3;
         this.speed = getRandomInt(1, 5);
-
         this.context = mainContext;
       }
 
       drawStar() {
         this.counter -= this.speed;
-
         if (this.counter < 1) {
           this.counter = canvasWidth;
           this.x = getRandomInt(-centerX, centerX);
           this.y = getRandomInt(-centerY, centerY);
-
           this.radiusMax = getRandomInt(1, 3);
           this.speed = getRandomInt(1, 5);
         }
 
         let xRatio = this.x / this.counter;
         let yRatio = this.y / this.counter;
-
         let starX = remap(xRatio, 0, 1, 0, canvasWidth);
         let starY = remap(yRatio, 0, 1, 0, canvasHeight);
-
         this.radius = remap(this.counter, 0, canvasWidth, this.radiusMax, 0);
 
         mainContext.beginPath();
-
         mainContext.arc(starX, starY, this.radius, 0, Math.PI * 2, false);
         mainContext.closePath();
-
         mainContext.fillStyle = "#FFF";
         mainContext.fill();
       }
@@ -371,24 +477,18 @@
     function draw(timestamp) {
       currentTime = timestamp;
       deltaTime = currentTime - previousTime;
-
       if (deltaTime > interval) {
         previousTime = currentTime - (deltaTime % interval);
-
         mainContext.clearRect(0, 0, canvasWidth, canvasHeight);
         mainContext.fillStyle = "#000";
         mainContext.fillRect(0, 0, canvasWidth, canvasHeight);
-
         mainContext.translate(centerX, centerY);
-
         for (let i = 0; i < stars.length; i++) {
           let star = stars[i];
           star.drawStar();
         }
-
         mainContext.translate(-centerX, -centerY);
       }
-
       requestAnimationFrame(draw);
     }
     draw();
@@ -403,7 +503,6 @@
       istop = Number(istop);
       ostart = Number(ostart);
       ostop = Number(ostop);
-
       return ostart + (ostop - ostart) * ((value - istart) / (istop - istart));
     }
 
@@ -416,6 +515,92 @@
       centerX = canvasWidth * 0.5;
       centerY = canvasHeight * 0.5;
     });
+
+    // Kursor dairəvi effekt
+    const cursorEffect = document.getElementById('cursor-effect');
+    const title = document.getElementById('title');
+    const subtitle = document.getElementById('subtitle');
+
+    document.addEventListener('mousemove', (e) => {
+      const rectTitle = title.getBoundingClientRect();
+      const rectSubtitle = subtitle.getBoundingClientRect();
+
+      // Kursor mətnin üzərindədirsə
+      const isOverTitle = e.clientX >= rectTitle.left && e.clientX <= rectTitle.right &&
+                         e.clientY >= rectTitle.top && e.clientY <= rectTitle.bottom;
+      const isOverSubtitle = e.clientX >= rectSubtitle.left && e.clientX <= rectSubtitle.right &&
+                            e.clientY >= rectSubtitle.top && e.clientY <= rectSubtitle.bottom;
+
+      if (isOverTitle || isOverSubtitle) {
+        cursorEffect.style.opacity = '1';
+        cursorEffect.style.left = `${e.clientX - 30}px`;
+        cursorEffect.style.top = `${e.clientY - 30}px`;
+
+        // Hərfləri yoxla
+        const letters = document.querySelectorAll('.letter');
+        letters.forEach(letter => {
+          const rect = letter.getBoundingClientRect();
+          const letterCenterX = rect.left + rect.width / 2;
+          const letterCenterY = rect.top + rect.height / 2;
+          const distance = Math.sqrt(
+            Math.pow(e.clientX - letterCenterX, 2) + Math.pow(e.clientY - letterCenterY, 2)
+          );
+
+          if (distance < 30) {
+            letter.classList.add('active');
+          } else {
+            letter.classList.remove('active');
+          }
+        });
+      } else {
+        cursorEffect.style.opacity = '0';
+        document.querySelectorAll('.letter').forEach(letter => {
+          letter.classList.remove('active');
+        });
+      }
+
+      // Kursor izi effekti
+      const trail = document.createElement('div');
+      trail.className = 'trail';
+      trail.style.left = `${e.clientX - 2.5}px`;
+      trail.style.top = `${e.clientY - 2.5}px`;
+      document.body.appendChild(trail);
+      setTimeout(() => {
+        trail.remove();
+      }, 500);
+    });
+
+    // Modal funksionallığı
+    const projectCards = document.querySelectorAll('.project-card');
+    const modals = document.querySelectorAll('.modal');
+    const closeButtons = document.querySelectorAll('.close');
+
+    projectCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const modalId = card.getAttribute('data-modal');
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'flex';
+      });
+    });
+
+    closeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const modal = button.closest('.modal');
+        modal.style.display = 'none';
+      });
+    });
+
+    // Kliklə modalın kənarına basıldıqda bağla
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        e.target.style.display = 'none';
+      }
+    });
+
+    // Musiqi nəzarəti
+    const audio = document.getElementById('background-music');
+    audio.volume = 0.3;
+    audio.play();
   </script>
 
 </body>
