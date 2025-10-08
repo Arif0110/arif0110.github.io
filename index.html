@@ -9,25 +9,55 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
   <style>
-    /* Genel stil */
+    /* Arka plan - yıldızlı animasyon */
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #0a0a0a, #1e1e1e);
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: radial-gradient(circle at top left, #0a0a0a, #1e1e1e);
       color: #00ff00;
+      text-align: center;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-      overflow-x: hidden;
-      text-align: center;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Yıldız efekti */
+    .stars {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: twinkle 2s infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.3; }
+      to { opacity: 1; }
     }
 
     h1, h2 {
-      margin: 10px 0;
+      position: relative;
+      z-index: 1;
       letter-spacing: 2px;
-      text-shadow: 0 0 20px rgba(0,255,125,0.7);
+      text-shadow: 0 0 15px rgba(0,255,125,0.6);
+      margin: 10px 0;
     }
 
     h1 { font-size: 3rem; font-weight: 900; }
@@ -37,7 +67,12 @@
     .links {
       display: flex;
       gap: 25px;
-      margin-top: 40px;
+      margin-top: 30px;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards;
+      animation-delay: 3s;
+      position: relative;
+      z-index: 1;
     }
 
     .links a {
@@ -51,48 +86,52 @@
       transform: scale(1.3);
     }
 
-    /* Projeler bölümü */
+    /* Projeler */
     .projects {
-      margin-top: 50px;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 30px;
-      max-width: 1000px;
+      flex-direction: column;
+      gap: 20px;
+      margin-top: 50px;
+      max-width: 600px;
+      position: relative;
+      z-index: 1;
     }
 
     .project-card {
-      background: #111;
+      background: rgba(10,10,10,0.8);
       border: 1px solid #00ff00;
+      border-radius: 12px;
       padding: 20px;
-      border-radius: 15px;
-      width: 250px;
-      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: transform 0.3s, opacity 0.3s;
     }
 
-    .project-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 0 20px rgba(0,255,125,0.7);
+    .project-card.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .project-card h3 {
+      font-size: 1.3rem;
       margin-bottom: 10px;
-      font-size: 1.2rem;
       color: #00ff00;
     }
 
     .project-card p {
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: #a0a0a0;
     }
 
     footer {
-      margin-top: 50px;
+      position: absolute;
+      bottom: 15px;
       font-size: 0.9rem;
       color: #ff0000;
+      z-index: 1;
     }
 
-    /* Letter by letter animasyon için span */
+    /* Letter animation */
     .letter {
       display: inline-block;
       opacity: 0;
@@ -104,15 +143,22 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 768px) {
       h1 { font-size: 2rem; }
       h2 { font-size: 1rem; }
       .links a { font-size: 1.7rem; }
-      .project-card { width: 200px; }
+      .project-card { width: 90%; margin: 0 auto; }
     }
   </style>
 </head>
 <body>
+
+  <div class="stars"></div>
 
   <h1 id="title"></h1>
   <h2 id="subtitle"></h2>
@@ -125,16 +171,16 @@
 
   <div class="projects">
     <div class="project-card">
-      <h3>Unity Oyun Projesi</h3>
-      <p>3D platform oyunu, OpenGL shader efektleri ve karakter animasyonları içeriyor.</p>
+      <h3>Unity</h3>
+      <p>C++, Unity, OpenGL istifadə etdiyim oyun layihəsi.</p>
     </div>
     <div class="project-card">
       <h3>C++ Motor</h3>
-      <p>Kendi oyun motorumu geliştirdim, OpenGL ile rendering ve fizik motoru entegre.</p>
+      <p>C++ və OpenGL istifadə edərək oyun motoru layihəsi.</p>
     </div>
     <div class="project-card">
-      <h3>Web Projesi</h3>
-      <p>React ve JavaScript kullanarak interaktif web arayüzleri hazırladım.</p>
+      <h3>OpenGL Projesi</h3>
+      <p>OpenGL ilə rendering və shader işləri.</p>
     </div>
   </div>
 
@@ -157,9 +203,30 @@
     const titleEl = document.getElementById('title');
     const subtitleEl = document.getElementById('subtitle');
 
-    animateText(titleEl, "Salam, Mən Arif.", 150, () => {
-      animateText(subtitleEl, "Texnologiya və oyun inkişafı ilə məşğulam. C++, Unity, OpenGL və layihələr üzərində işləyirəm.", 30);
+    animateText(titleEl, "Salam,MənArif.", 150, () => {
+      animateText(subtitleEl, "Texnologiyavəoyuninkişafıiləməşğulam.C++,Unity,OpenGLvəlayihələrüzərindəişləyirəm.", 30, showProjects);
     });
+
+    // Projeleri sırayla göster
+    function showProjects() {
+      const cards = document.querySelectorAll('.project-card');
+      cards.forEach((card, i) => {
+        setTimeout(() => {
+          card.classList.add('show');
+        }, i * 500);
+      });
+    }
+
+    // Yıldızları random konumla oluştur
+    const starsContainer = document.querySelector('.stars');
+    for(let i=0; i<100; i++){
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.width = star.style.height = Math.random()*2 + 1 + 'px';
+      starsContainer.appendChild(star);
+    }
   </script>
 
 </body>
