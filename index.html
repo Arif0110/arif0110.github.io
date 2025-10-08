@@ -9,7 +9,6 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
   <style>
-    /* Arka plan - yıldızlı animasyon */
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
@@ -26,7 +25,6 @@
       position: relative;
     }
 
-    /* Yıldız efekti */
     .stars {
       position: absolute;
       top: 0;
@@ -47,10 +45,7 @@
       animation: twinkle 2s infinite alternate;
     }
 
-    @keyframes twinkle {
-      from { opacity: 0.3; }
-      to { opacity: 1; }
-    }
+    @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
 
     h1, h2 {
       position: relative;
@@ -63,7 +58,6 @@
     h1 { font-size: 3rem; font-weight: 900; }
     h2 { font-size: 1.4rem; font-weight: 400; color: #a0a0a0; }
 
-    /* Sosyal linkler */
     .links {
       display: flex;
       gap: 25px;
@@ -86,15 +80,17 @@
       transform: scale(1.3);
     }
 
-    /* Projeler */
+    /* Projeler yan yana 2 sütun */
     .projects {
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
       margin-top: 50px;
-      max-width: 600px;
+      max-width: 900px;
       position: relative;
       z-index: 1;
+      justify-items: center;
+      align-items: start;
     }
 
     .project-card {
@@ -102,9 +98,12 @@
       border: 1px solid #00ff00;
       border-radius: 12px;
       padding: 20px;
+      width: 100%;
+      box-sizing: border-box;
       opacity: 0;
       transform: translateY(30px);
       transition: transform 0.3s, opacity 0.3s;
+      text-align: center;
     }
 
     .project-card.show {
@@ -121,6 +120,7 @@
     .project-card p {
       font-size: 1rem;
       color: #a0a0a0;
+      line-height: 1.4;
     }
 
     footer {
@@ -131,7 +131,6 @@
       z-index: 1;
     }
 
-    /* Letter animation */
     .letter {
       display: inline-block;
       opacity: 0;
@@ -139,20 +138,15 @@
       animation: fadeUp 0.5s forwards;
     }
 
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 768px) {
       h1 { font-size: 2rem; }
       h2 { font-size: 1rem; }
       .links a { font-size: 1.7rem; }
-      .project-card { width: 90%; margin: 0 auto; }
+      .projects { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -187,7 +181,7 @@
   <footer>&copy; 2025 ArifDeV</footer>
 
   <script>
-    // Letter by letter animasyon
+    // Harf harf animasyon
     function animateText(el, text, delay=100, callback=null) {
       el.innerHTML = '';
       for (let i = 0; i < text.length; i++) {
