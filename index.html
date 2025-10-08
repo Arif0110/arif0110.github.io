@@ -3,62 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ArifDeV</title>
+  <title>ArifDeV Portfolio</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
   <style>
+    /* Genel stil */
     body {
       font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at top left, #1e1e1e, #0a0a0a);
-      color: #f2f2f2;
+      background: linear-gradient(135deg, #0a0a0a, #1e1e1e);
+      color: #00ff00;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      overflow: hidden;
+      overflow-x: hidden;
       text-align: center;
     }
 
-    /* Ortak animasyon sınıfı */
-    .animated-text {
-      opacity: 0;
-      transform: translateY(20px);
-      background: linear-gradient(to right, #00ff00 50%, #0000ff 50%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 15px rgba(0,255,125,0.6);
-      animation: fadeUp 1s ease forwards, shadowChange 2s ease-in-out infinite;
+    h1, h2 {
+      margin: 10px 0;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(0,255,125,0.7);
     }
 
-    /* Alt alta animasyon gecikmesi */
-    .animated-text:nth-child(1) { animation-delay: 0s, 0s; font-size: 3rem; font-weight: 900; letter-spacing: 2px; }
-    .animated-text:nth-child(2) { animation-delay: 0.7s, 0s; font-size: 1.4rem; font-weight: 400; margin-top: 15px; letter-spacing: 1px; }
+    h1 { font-size: 3rem; font-weight: 900; }
+    h2 { font-size: 1.4rem; font-weight: 400; color: #a0a0a0; }
 
-    /* Alt alta yukarıdan gelme animasyonu */
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Text-shadow renk animasyonu */
-    @keyframes shadowChange {
-      0% { text-shadow: 0 0 15px rgba(0,255,125,0.6); }
-      50% { text-shadow: 0 0 15px rgba(0,0,255,0.6); }
-      100% { text-shadow: 0 0 15px rgba(0,255,125,0.6); }
-    }
-
-    /* Link animasyonu */
+    /* Sosyal linkler */
     .links {
       display: flex;
       gap: 25px;
-      margin-top: 50px;
-      opacity: 0;
-      animation: fadeInUp 1s ease forwards;
-      animation-delay: 1.5s;
+      margin-top: 40px;
     }
 
     .links a {
@@ -69,38 +48,119 @@
 
     .links a:hover {
       color: #ff6f61;
-      transform: scale(1.2);
+      transform: scale(1.3);
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    /* Projeler bölümü */
+    .projects {
+      margin-top: 50px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1000px;
+    }
+
+    .project-card {
+      background: #111;
+      border: 1px solid #00ff00;
+      padding: 20px;
+      border-radius: 15px;
+      width: 250px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 20px rgba(0,255,125,0.7);
+    }
+
+    .project-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      color: #00ff00;
+    }
+
+    .project-card p {
+      font-size: 0.9rem;
+      color: #a0a0a0;
     }
 
     footer {
-      position: absolute;
-      bottom: 20px;
+      margin-top: 50px;
       font-size: 0.9rem;
       color: #ff0000;
     }
 
+    /* Letter by letter animasyon için span */
+    .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s forwards;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     @media (max-width: 768px) {
-      .animated-text:nth-child(1) { font-size: 2rem; }
-      .animated-text:nth-child(2) { font-size: 1rem; }
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1rem; }
       .links a { font-size: 1.7rem; }
+      .project-card { width: 200px; }
     }
   </style>
 </head>
 <body>
-  <h1 class="animated-text">Salam, Mən Arif.</h1>
-  <h2 class="animated-text">Texnologiya və oyun inkişafı ilə məşğulam. C++, Unity, OpenGL və yaradıcı layihələr üzərində işləyirəm.</h2>
+
+  <h1 id="title"></h1>
+  <h2 id="subtitle"></h2>
 
   <div class="links">
-    <a href="https://github.com/Arif0110" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-    <a href="https://www.youtube.com/@GigaChadDev" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-    <a href="https://play.google.com/store/apps/dev?id=8982268170848334133" target="_blank" title="Play Store"><i class="fab fa-google-play"></i></a>
+    <a href="https://github.com/Arif0110" target="_blank"><i class="fab fa-github"></i></a>
+    <a href="https://www.youtube.com/@GigaChadDev" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://play.google.com/store/apps/developer?id=8982268170848334133" target="_blank"><i class="fab fa-google-play"></i></a>
+  </div>
+
+  <div class="projects">
+    <div class="project-card">
+      <h3>Unity Oyun Projesi</h3>
+      <p>3D platform oyunu, OpenGL shader efektleri ve karakter animasyonları içeriyor.</p>
+    </div>
+    <div class="project-card">
+      <h3>C++ Motor</h3>
+      <p>Kendi oyun motorumu geliştirdim, OpenGL ile rendering ve fizik motoru entegre.</p>
+    </div>
+    <div class="project-card">
+      <h3>Web Projesi</h3>
+      <p>React ve JavaScript kullanarak interaktif web arayüzleri hazırladım.</p>
+    </div>
   </div>
 
   <footer>&copy; 2025 ArifDeV</footer>
+
+  <script>
+    // Letter by letter animasyon
+    function animateText(el, text, delay=100, callback=null) {
+      el.innerHTML = '';
+      for (let i = 0; i < text.length; i++) {
+        const span = document.createElement('span');
+        span.textContent = text[i];
+        span.className = 'letter';
+        span.style.animationDelay = (i * delay) + 'ms';
+        el.appendChild(span);
+      }
+      if (callback) setTimeout(callback, text.length * delay + 200);
+    }
+
+    const titleEl = document.getElementById('title');
+    const subtitleEl = document.getElementById('subtitle');
+
+    animateText(titleEl, "Salam, Mən Arif.", 150, () => {
+      animateText(subtitleEl, "Texnologiya və oyun inkişafı ilə məşğulam. C++, Unity, OpenGL və layihələr üzərində işləyirəm.", 30);
+    });
+  </script>
+
 </body>
 </html>
