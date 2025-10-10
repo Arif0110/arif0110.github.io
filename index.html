@@ -63,6 +63,7 @@
       text-shadow: 0 0 20px rgba(0,255,125,0.7), 0 0 40px rgba(0,255,125,0.3);
       margin: 15px 0;
       animation: glow 3s ease-in-out infinite alternate;
+      min-height: 1.2em; 
     }
 
     @keyframes glow {
@@ -84,6 +85,13 @@
       color: #a0a0a0; 
       word-spacing: 2px; 
       line-height: 1.6; 
+    }
+
+    
+    .word {
+      display: inline-block; 
+      white-space: nowrap; 
+      margin-right: 8px; 
     }
 
     .letter {
@@ -109,7 +117,7 @@
       margin-top: 30px;
       opacity: 0;
       animation: fadeInUp 1s ease forwards;
-      animation-delay: 3s;
+      animation-delay: 1.5s; 
       position: relative;
       z-index: 1;
     }
@@ -232,7 +240,7 @@
       z-index: 1;
       opacity: 0;
       animation: fadeInUp 1s ease forwards;
-      animation-delay: 4s;
+      animation-delay: 2.5s; 
     }
 
     @keyframes fadeInUp {
@@ -402,17 +410,39 @@
   <footer>&copy; 2025 ArifDeV - Bütün hüquqlar qorunur</footer>
 
   <script>
-    // Harf-harf animasiya
-    function animateText(el, text, delay=100, callback=null) {
+    function animateText(el, text, delay=30, callback=null) {
       el.innerHTML = '';
-      for (let i = 0; i < text.length; i++) {
-        const span = document.createElement('span');
-        span.textContent = text[i];
-        span.className = 'letter';
-        span.style.animationDelay = (i * delay) + 'ms';
-        el.appendChild(span);
+      let totalDelay = 0;
+      const words = text.split(' '); 
+      words.forEach((wordText, wordIndex) => {
+       
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'word'; 
+
+        for (let i = 0; i < wordText.length; i++) {
+          const span = document.createElement('span');
+          span.textContent = wordText[i];
+          span.className = 'letter';
+          
+          
+          span.style.animationDelay = totalDelay + 'ms';
+          totalDelay += delay;
+
+          wordSpan.appendChild(span);
+        }
+        
+       
+        el.appendChild(wordSpan);
+
+        if (wordIndex < words.length - 1) {
+          totalDelay += delay * 1.5; 
+        }
+      });
+
+      if (callback) {
+        
+        setTimeout(callback, totalDelay + 300);
       }
-      if (callback) setTimeout(callback, text.length * delay + 300);
     }
 
     const titleEl = document.getElementById('title');
@@ -422,17 +452,16 @@
       animateText(subtitleEl, "Texnologiya və oyun inkişafında sərhədləri aşan layihələr üzərində işləyirəm.", 30, showProjects);
     });
 
-    // Layihə kartlarını ardıcıl göstər
+   
     function showProjects() {
       const cards = document.querySelectorAll('.project-card');
       cards.forEach((card, i) => {
         setTimeout(() => {
           card.classList.add('show');
-        }, i * 600);
+        }, i * 300 + 100); 
       });
     }
 
-    // Starfield Effekti
     let outerspace = document.querySelector("#outerspace");
     let mainContext = outerspace.getContext('2d');
     let canvasWidth = window.innerWidth;
@@ -533,7 +562,7 @@
         this.x = getRandomInt(0, canvasWidth);
         this.y = getRandomInt(0, canvasHeight);
         this.radius = getRandomInt(20, 50);
-        this.speed = getRandomInt(0.1, 0.5);
+        this.speed = getRandomInt(1, 5) * 0.1; 
       }
 
       draw() {
@@ -600,9 +629,9 @@
       const rectSubtitle = subtitle.getBoundingClientRect();
 
       const isOverTitle = e.clientX >= rectTitle.left && e.clientX <= rectTitle.right &&
-                         e.clientY >= rectTitle.top && e.clientY <= rectTitle.bottom;
+                          e.clientY >= rectTitle.top && e.clientY <= rectTitle.bottom;
       const isOverSubtitle = e.clientX >= rectSubtitle.left && e.clientX <= rectSubtitle.right &&
-                            e.clientY >= rectSubtitle.top && e.clientY <= rectSubtitle.bottom;
+                              e.clientY >= rectSubtitle.top && e.clientY <= rectSubtitle.bottom;
 
       if (isOverTitle || isOverSubtitle) {
         cursorEffect.style.opacity = '1';
@@ -630,8 +659,6 @@
           letter.classList.remove('active');
         });
       }
-
-      // Kursor izi effekti (random rənglər)
       const colors = ['#ff6f61', '#00ff00', '#00ffff'];
       const trail = document.createElement('div');
       trail.className = 'trail';
@@ -644,7 +671,6 @@
       }, 500);
     });
 
-    // Modal funksionallığı
     const projectCards = document.querySelectorAll('.project-card');
     const modals = document.querySelectorAll('.modal');
     const closeButtons = document.querySelectorAll('.close');
