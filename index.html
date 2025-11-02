@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Arif</title>
-
+<title>Arif Dev Page</title>
 <style>
 /* Genel stil */
 body {
@@ -76,24 +75,23 @@ p {
   background: #333;
 }
 </style>
-
 </head>
 <body>
 
 <header>
-  <h1>Form bot - coming chat bot</h1>
+  <h1>Arif Dev Page</h1>
 </header>
 
 <main>
-  <h2>Salam aleykum!</h2>
-  <p>Test sayt</p>
+  <h2>Hoşgeldin!</h2>
+  <p>Bu site ileride portföy ve projelerim için kullanılacak. Sağ alt köşedeki buton ile bana mesaj gönderebilirsin.</p>
 </main>
 
 <!-- Destek butonu ve form kutusu -->
 <div id="support-btn">💬</div>
 
 <div id="support-box">
-  <form id="supportForm" action="" method="post" target="hidden_iframe">
+  <form id="supportForm" action="https://script.google.com/macros/s/AKfycbz6Cao8D573-Kw3nE2LAdsCGWa2N4k8QSEETgfqaEqdebIAAilPMu_4IjneGVpYYko/exec" method="post" target="hidden_iframe">
     <input type="text" name="name" placeholder="Adınız (opsiyonel)">
     <input type="email" name="email" placeholder="Emailiniz" required>
     <textarea name="message" placeholder="Mesajınız" required></textarea>
@@ -109,28 +107,6 @@ const btn = document.getElementById("support-btn");
 const box = document.getElementById("support-box");
 btn.onclick = () => {
   box.style.display = box.style.display === "block" ? "none" : "block";
-};
-
-// Form submit işlemi (Apps Script veya Worker URL ile)
-document.getElementById("supportForm").onsubmit = async (e) => {
-  e.preventDefault();
-  const data = Object.fromEntries(new FormData(e.target).entries());
-
-  // Buraya Apps Script / Worker URL’inizi koyun
-  const URL = "https://script.google.com/macros/s/AKfycbz6Cao8D573-Kw3nE2LAdsCGWa2N4k8QSEETgfqaEqdebIAAilPMu_4IjneGVpYYko/exec";
-
-  try {
-    const res = await fetch(URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
-    alert(res.ok ? "Mesaj gönderildi ✅" : "Bir hata oluştu ❌");
-    e.target.reset();
-    box.style.display = "none";
-  } catch (err) {
-    alert("Hata: " + err.message);
-  }
 };
 </script>
 
