@@ -171,7 +171,6 @@ button:hover {
 </div>
 
 <script>
-// Kutuyu aç/kapa
 const btn = document.getElementById("support-btn");
 const box = document.getElementById("support-box");
 btn.onclick = () => {
@@ -190,15 +189,15 @@ tabs.forEach(t => t.addEventListener("click", () => {
 // Form gönder
 document.getElementById("supportForm").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const data = Object.fromEntries(new FormData(e.target).entries());
+  const data = new FormData(e.target);
 
   const URL = "https://script.google.com/macros/s/AKfycbxkJUIuN_xU0RPYTQzrkzt0ByAwwo0nhCk0KQMO1zWgEM_apfdEXVpitz224WwTInJfVg/exec";
 
   await fetch(URL, {
     method: "POST",
     mode: "no-cors",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify(data)
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams(data).toString()
   });
 
   alert("Mesaj gönderildi ✅");
