@@ -1,112 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arif Dev Page</title>
 <style>
-/* Genel stil */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-}
-header {
-  background: #111;
-  color: #fff;
-  text-align: center;
-  padding: 15px 0;
-}
-main {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 0 15px;
-}
-h1, h2 {
-  margin: 0 0 15px 0;
-}
-p {
-  line-height: 1.5;
-}
+body { margin:0; font-family: Arial, sans-serif; background:#f4f4f4; }
+header { background:#111; color:#fff; text-align:center; padding:15px 0; }
+main { max-width:800px; margin:20px auto; padding:0 15px; }
+h1,h2{ margin:0 0 15px 0; }
+p { line-height:1.5; }
 
 /* Destek/chat butonu ve kutusu */
-#support-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: #111;
-  color: white;
-  font-size: 20px;
-  padding: 12px 16px;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  z-index: 9999;
-}
-#support-box {
-  display: none;
-  position: fixed;
-  bottom: 80px;
-  right: 20px;
-  width: 300px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-  padding: 12px;
-  z-index: 9999;
-}
-#support-box input, #support-box textarea {
-  width: 100%;
-  margin-bottom: 8px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-#support-box button {
-  width: 100%;
-  padding: 10px;
-  background: #111;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-#support-box button:hover {
-  background: #333;
-}
+#support-btn { position:fixed; bottom:20px; right:20px; background:#111; color:white; font-size:20px; padding:12px 16px; border-radius:50%; cursor:pointer; box-shadow:0 4px 10px rgba(0,0,0,0.2); z-index:9999; }
+#support-box { display:none; position:fixed; bottom:80px; right:20px; width:300px; background:#fff; border-radius:8px; box-shadow:0 4px 14px rgba(0,0,0,0.2); padding:12px; z-index:9999; }
+#support-box input, #support-box textarea { width:100%; margin-bottom:8px; padding:8px; border:1px solid #ccc; border-radius:4px; }
+#support-box button { width:100%; padding:10px; background:#111; color:white; border:none; border-radius:4px; cursor:pointer; }
+#support-box button:hover { background:#333; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Arif Dev Page</h1>
+<h1>Arif Dev Page</h1>
 </header>
 
 <main>
-  <h2>Hoşgeldin!</h2>
-  <p>Bu site ileride portföy ve projelerim için kullanılacak. Sağ alt köşedeki buton ile bana mesaj gönderebilirsin.</p>
+<h2>Hoşgeldin!</h2>
+<p>Bu site portföy ve projelerim için kullanılacak. Sağ alt köşedeki buton ile bana mesaj gönderebilirsin.</p>
 </main>
 
 <!-- Destek butonu ve form kutusu -->
 <div id="support-btn">💬</div>
-
 <div id="support-box">
-  <form id="supportForm" action="https://script.google.com/macros/s/AKfycbxtsR6vzwYPw64xZ1xvLOMyxzzSELMb-xsufnLHvJzgobsaiaMXvYJLQhlJPQPG8TOq/exec" method="post" target="hidden_iframe">
+  <form id="supportForm" action="https://script.google.com/macros/s/AKfycbxkJUIuN_xU0RPYTQzrkzt0ByAwwo0nhCk0KQMO1zWgEM_apfdEXVpitz224WwTInJfVg/exec" method="post" target="hidden_iframe">
     <input type="text" name="name" placeholder="Adınız (opsiyonel)">
     <input type="email" name="email" placeholder="Emailiniz" required>
     <textarea name="message" placeholder="Mesajınız" required></textarea>
     <button type="submit">Gönder</button>
   </form>
 </div>
-
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 
 <script>
 // Buton aç/kapa
 const btn = document.getElementById("support-btn");
 const box = document.getElementById("support-box");
-btn.onclick = () => {
-  box.style.display = box.style.display === "block" ? "none" : "block";
+btn.onclick = () => { box.style.display = box.style.display === "block" ? "none" : "block"; };
+
+// Form gönderimi
+document.getElementById("supportForm").onsubmit = () => {
+  setTimeout(() => {
+    alert("Mesajınız gönderildi! ✅");
+    document.getElementById("support-box").style.display = "none";
+    document.getElementById("supportForm").reset();
+  }, 100);
 };
 </script>
 
