@@ -2,85 +2,101 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Arif's Site</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arif</title>
 
 <style>
+/* Genel stil */
 body {
   margin: 0;
-  font-family: sans-serif;
-  background: #f5f5f5;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
 }
 header {
   background: #111;
-  color: white;
-  padding: 15px;
+  color: #fff;
   text-align: center;
+  padding: 15px 0;
 }
 main {
-  padding: 20px;
   max-width: 800px;
-  margin: auto;
+  margin: 20px auto;
+  padding: 0 15px;
 }
+h1, h2 {
+  margin: 0 0 15px 0;
+}
+p {
+  line-height: 1.5;
+}
+
+/* Destek/chat butonu ve kutusu */
 #support-btn {
   position: fixed;
   bottom: 20px;
   right: 20px;
   background: #111;
   color: white;
+  font-size: 20px;
   padding: 12px 16px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 9999;
 }
 #support-box {
   display: none;
   position: fixed;
   bottom: 80px;
   right: 20px;
-  background: white;
-  width: 260px;
-  padding: 12px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  width: 300px;
+  background: #fff;
   border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+  padding: 12px;
+  z-index: 9999;
 }
-#support-box input,
-#support-box textarea {
+#support-box input, #support-box textarea {
   width: 100%;
-  margin-bottom: 6px;
-  padding: 6px;
+  margin-bottom: 8px;
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 #support-box button {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   background: #111;
   color: white;
   border: none;
-  cursor: pointer;
   border-radius: 4px;
+  cursor: pointer;
+}
+#support-box button:hover {
+  background: #333;
 }
 </style>
 
 </head>
 <body>
 
-<header>Arif's Dev Page</header>
+<header>
+  <h1>Form bot - coming chat bot</h1>
+</header>
 
 <main>
-  <h2>Welcome</h2>
-  <p>Bu site ileride chat bot, backend testleri ve portföy projem için kullanılacak.</p>
-  <p>Şu an destek formu + mail sistemi kuruluyor.</p>
+  <h2>Salam aleykum!</h2>
+  <p>Test sayt</p>
 </main>
 
+<!-- Destek butonu ve form kutusu -->
 <div id="support-btn">💬</div>
 
 <div id="support-box">
-  <form id="supportForm" action="" method="post" target="hidden_iframe" onsubmit="submitted=true;">
-    <input name="name" placeholder="Ad (opsiyonel)">
-    <input name="email" type="email" placeholder="Email" required>
-    <textarea name="message" placeholder="Mesaj" required></textarea>
+  <form id="supportForm" action="" method="post" target="hidden_iframe">
+    <input type="text" name="name" placeholder="Adınız (opsiyonel)">
+    <input type="email" name="email" placeholder="Emailiniz" required>
+    <textarea name="message" placeholder="Mesajınız" required></textarea>
     <button type="submit">Gönder</button>
   </form>
 </div>
@@ -88,9 +104,33 @@ main {
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 
 <script>
-let box = document.getElementById("support-box");
-document.getElementById("support-btn").onclick = () => {
-  box.style.display = (box.style.display === "block") ? "none" : "block";
+// Buton aç/kapa
+const btn = document.getElementById("support-btn");
+const box = document.getElementById("support-box");
+btn.onclick = () => {
+  box.style.display = box.style.display === "block" ? "none" : "block";
+};
+
+// Form submit işlemi (Apps Script veya Worker URL ile)
+document.getElementById("supportForm").onsubmit = async (e) => {
+  e.preventDefault();
+  const data = Object.fromEntries(new FormData(e.target).entries());
+
+  // Buraya Apps Script / Worker URL’inizi koyun
+  const URL = "YOUR_BACKEND_URL_HERE";
+
+  try {
+    const res = await fetch(URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    alert(res.ok ? "Mesaj gönderildi ✅" : "Bir hata oluştu ❌");
+    e.target.reset();
+    box.style.display = "none";
+  } catch (err) {
+    alert("Hata: " + err.message);
+  }
 };
 </script>
 
