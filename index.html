@@ -117,7 +117,7 @@ document.getElementById("supportForm").onsubmit = async (e) => {
   const data = Object.fromEntries(new FormData(e.target).entries());
 
   // Buraya Apps Script / Worker URL’inizi koyun
-  const URL = "YOUR_BACKEND_URL_HERE";
+  const URL = "https://script.google.com/macros/s/AKfycbz6Cao8D573-Kw3nE2LAdsCGWa2N4k8QSEETgfqaEqdebIAAilPMu_4IjneGVpYYko/exec";
 
   try {
     const res = await fetch(URL, {
